@@ -24,6 +24,7 @@ html,body{
 
 body{
   overflow-x:hidden;
+  background: transparent;
 }
 
 .bg {
@@ -228,10 +229,6 @@ header{
     rgba(107,92,255,.05)
   );
   color: var(--accent);
-}
-
-.footer-space{
-  height:18px;
 }
 
 /* ===== Segmented progress (6 steps) ===== */
