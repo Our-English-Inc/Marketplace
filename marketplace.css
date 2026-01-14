@@ -99,6 +99,8 @@ header{
 
   display: flex;
   flex-direction: column;
+
+  pointer-events: none;
 }
 
 .card::before{
@@ -215,6 +217,8 @@ header{
   background:linear-gradient(180deg,var(--accent),rgba(107,92,255,.8));
   color:white;
   cursor:pointer;
+
+  pointer-events: auto;
 }
 
 .btn.secondary{

@@ -1,6 +1,9 @@
+// ====== Variables ======
 const TOTAL_CHAPTERS = 6;
 const LESSONS_PER_CHAPTER = 5;
 
+//#region ====== Draw Game Card Elements ======
+// Generate shape icon if no game logo
 function iconSVG(index) {
   const shapes = [
     `<circle cx="11" cy="11" r="7" fill="rgba(107,92,255,.25)" />`,
@@ -10,22 +13,23 @@ function iconSVG(index) {
   return shapes[index % shapes.length];
 }
 
+// Update button look according to learning progress
 function getButtonState(completedChapters) {
-  if (completedChapters <= 0) {
+  if (completedChapters <= 0) { // if haven't started
     return {
       label: "Start",
       className: "secondary"
     };
   }
 
-  if (completedChapters >= TOTAL_CHAPTERS) {
+  if (completedChapters >= TOTAL_CHAPTERS) { // if finished all
     return {
       label: "Review",
       className: "review"
     };
   }
 
-  return {
+  return { // if in middle of progress
     label: "Continue",
     className: ""
   };
@@ -45,11 +49,13 @@ function getLessonRange(completedChapters) {
   return { start, end };
 }
 
+// Make sure the number of completed chapters is legal
 function clampChapters(n) {
   if (typeof n !== "number" || Number.isNaN(n)) return 0;
   return Math.min(Math.max(n, 0), TOTAL_CHAPTERS);
 }
 
+// Generate segments in progress bar according to the number of completed chapters
 function renderSegments(completedChapters) {
   const done = clampChapters(completedChapters);
   let html = "";
@@ -59,6 +65,9 @@ function renderSegments(completedChapters) {
   return html;
 }
 
+//#endregion
+
+// Draw All Game Cards
 document.addEventListener("DOMContentLoaded", () => {
   const leftCol = document.getElementById("col-left");
   const rightCol = document.getElementById("col-right");
@@ -120,10 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      card.onclick = () => {
+      // Click on button to open game url
+      const button = card.querySelector("button.btn");
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
         window.location.href = g.url;
-      };
+      });
 
+      // Assign this card to left or right column
       if (i % 2 === 0) leftCol.appendChild(card);
       else rightCol.appendChild(card);
     });
