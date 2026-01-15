@@ -143,6 +143,14 @@ header{
   height:22px;
 }
 
+.game-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
 .meta{
   flex:1;
   display: flex;

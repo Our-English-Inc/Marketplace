@@ -13,6 +13,26 @@ function iconSVG(index) {
   return shapes[index % shapes.length];
 }
 
+// Display game logo
+function renderLogo(game, index) {
+  if (game.logo) {
+    return `
+      <img
+        src="${game.logo}"
+        alt="${game.title} logo"
+        class="game-logo"
+        draggable="false"
+      />
+    `;
+  }
+
+  return `
+    <svg viewBox="0 0 22 22" aria-hidden="true">
+      ${iconSVG(index)}
+    </svg>
+  `;
+}
+
 // Update button look according to learning progress
 function getButtonState(completedChapters) {
   if (completedChapters <= 0) { // if haven't started
@@ -81,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     leftCol.innerHTML = "";
     rightCol.innerHTML = "";
 
-    games.forEach((game, i) => {
+    games.forEach((game, index) => {
       const hasProgress = typeof game.userdata_progress === "number";
       const completedChapters = clampChapters(hasProgress ? game.userdata_progress : 0);
       const range = getLessonRange(completedChapters);
@@ -93,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.innerHTML = `
         <div class="row">
           <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 22 22">${iconSVG(i)}</svg>
+            ${renderLogo(game, index)}
           </div>
 
           <div class="meta">
@@ -137,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // Assign this card to left or right column
-      if (i % 2 === 0) leftCol.appendChild(card);
+      if (index % 2 === 0) leftCol.appendChild(card);
       else rightCol.appendChild(card);
     });
   }
