@@ -33,28 +33,6 @@ function renderLogo(game, index) {
   `;
 }
 
-// Update button look according to learning progress
-function getButtonState(completedChapters) {
-  if (completedChapters <= 0) { // if haven't started
-    return {
-      label: "Start",
-      className: "secondary"
-    };
-  }
-
-  if (completedChapters >= TOTAL_CHAPTERS) { // if finished all
-    return {
-      label: "Review",
-      className: "review"
-    };
-  }
-
-  return { // if in middle of progress
-    label: "Continue",
-    className: ""
-  };
-}
-
 // progress = completed chapters (0..6)
 // Display always "Lesson xx–xx" (1–5 ... 26–30)
 // If completedChapters == 6, still display last range 26–30.
@@ -105,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const hasProgress = typeof game.userdata_progress === "number";
       const completedChapters = clampChapters(hasProgress ? game.userdata_progress : 0);
       const range = getLessonRange(completedChapters);
-      const buttonState = getButtonState(completedChapters);
 
       const card = document.createElement("article");
       card.className = "card";
@@ -136,25 +113,15 @@ document.addEventListener("DOMContentLoaded", () => {
                   ${renderSegments(completedChapters)}
                 </div>
               </div>
-
-              <button class="btn ${buttonState.className}" type="button">
-                ▶ ${buttonState.label}
-              </button>
             </div>
           </div>
         </div>
       `;
-      // Add this into div meta if we want tags
-      // <ul class="chips" aria-label="game tags">
-        // ${game.tags.map(t => `<li class="chip">${t}</li>`).join("")}
-      // </ul>
 
-      // Click on button to open game url
-      const button = card.querySelector("button.btn");
-      button.addEventListener("click", (e) => {
-        e.stopPropagation();
+      // Click on card to open game url
+      card.onclick = () => {
         window.location.href = game.url;
-      });
+      };
 
       // Assign this card to left or right column
       if (index % 2 === 0) leftCol.appendChild(card);
