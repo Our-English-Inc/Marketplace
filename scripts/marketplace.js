@@ -2,6 +2,7 @@
 const leftCol = document.getElementById("col-left");
 const rightCol = document.getElementById("col-right");
 const searchInput = document.getElementById("game-search");
+const clearBtn = document.getElementById("search-clear");
 
 // ====== Variables ======
 const TOTAL_CHAPTERS = 6;
@@ -81,6 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
     leftCol.innerHTML = "";
     rightCol.innerHTML = "";
 
+    // Toggle search clear button by whether search bar is empty
+    if (filterText.length > 0) {
+      clearBtn.classList.add("visible");
+    } else {
+      clearBtn.classList.remove("visible");
+    }
+
     // Remove unmatched games
     const filteredGames = games.filter(game => 
       game.title.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -144,6 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Search bar user input
   searchInput.addEventListener("input", (e) => {
     render(e.target.value);
+  });
+
+  // Clear search bar with button
+  clearBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    render("");
+    searchInput.focus();
   });
 
   render();
