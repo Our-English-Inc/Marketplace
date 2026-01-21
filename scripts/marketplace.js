@@ -1,3 +1,11 @@
+// DOM References
+const leftCol = document.getElementById("col-left");
+const rightCol = document.getElementById("col-right");
+const searchInput = document.getElementById("game-search");
+const clearBtn = document.getElementById("search-clear");
+const noResults = document.getElementById("no-results");
+const feed = document.querySelector(".feed");
+
 // ====== Variables ======
 const TOTAL_CHAPTERS = 6;
 const LESSONS_PER_CHAPTER = 5;
@@ -67,19 +75,39 @@ function renderSegments(completedChapters) {
 
 // Draw All Game Cards
 document.addEventListener("DOMContentLoaded", () => {
-  const leftCol = document.getElementById("col-left");
-  const rightCol = document.getElementById("col-right");
-
   if (!leftCol || !rightCol) {
     console.error("Missing #col-left or #col-right in index.html");
     return;
   }
   
-  function render() {
+  function render(filterText = "") {
     leftCol.innerHTML = "";
     rightCol.innerHTML = "";
 
-    games.forEach((game, index) => {
+    // Toggle search clear button by whether search bar is empty
+    if (filterText.length > 0) {
+      clearBtn.classList.add("visible");
+    } else {
+      clearBtn.classList.remove("visible");
+    }
+
+    // Remove unmatched games
+    const filteredGames = games.filter(game => 
+      game.title.toLowerCase().includes(filterText.toLowerCase()) ||
+      game.desc.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    // Display No Matching Result text if so
+    if (filteredGames.length === 0) {
+      feed.style.display = "none";
+      noResults.style.display = "block";
+      noResults.innerHTML = `No matching results for <span>"${filterText}"</span>`;
+    } else {
+      feed.style.display = "grid"; // Display matched results
+      noResults.style.display = "none";
+    }
+
+    filteredGames.forEach((game, index) => {
       const hasProgress = typeof game.userdata_progress === "number";
       const completedChapters = clampChapters(hasProgress ? game.userdata_progress : 0);
       const range = getLessonRange(completedChapters);
@@ -133,6 +161,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Search bar user input
+  searchInput.addEventListener("input", (e) => {
+    render(e.target.value);
+  });
+
+  // Clear search bar with button
+  clearBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    render("");
+    searchInput.focus();
+  });
+
   render();
 });
-
