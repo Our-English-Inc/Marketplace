@@ -323,6 +323,8 @@ header{
   display:grid;
   place-items:center;
   flex-shrink:0;
+
+  cursor: pointer;
 }
 
 .icon svg{
@@ -352,6 +354,15 @@ header{
 }
 
 .desc{
+  height: 2.8em;
+  line-height: 1.4;
+
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
   margin:0 0 10px;
   font-size:12.8px;
   color:rgba(15,18,34,.7);
@@ -363,7 +374,7 @@ header{
   gap: 8px;
   margin-bottom: 8px;
 
-  color: var(--accent);   /* 和背景同款紫色 */
+  color: var(--accent);
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
