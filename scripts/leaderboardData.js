@@ -22,7 +22,7 @@ const leaderboardData = {
         { name: "Sarah", score: 19527 },
     ],
 
-    "Sentence Scramble": [
+    "sentence-scramble": [
         { name: "James", score: 56342 },
         { name: "Mary", score: 91208 },
         { name: "Michael", score: 34791 },
@@ -45,7 +45,7 @@ const leaderboardData = {
         { name: "Sarah", score: 85761 },
     ],
 
-    "Bubble Pop": [
+    "bubble-pop": [
         { name: "James", score: 48371 },
         { name: "Mary", score: 92754 },
         { name: "Michael", score: 15642 },
@@ -68,7 +68,7 @@ const leaderboardData = {
         { name: "Sarah", score: 45831 },
     ],
 
-    "Placeholder 1": [
+    "placeholder-1": [
         { name: "James", score: 90562 },
         { name: "Mary", score: 21748 },
         { name: "Michael", score: 68413 },
@@ -91,7 +91,7 @@ const leaderboardData = {
         { name: "Sarah", score: 36195 },
     ],
 
-    "Placeholder 2": [
+    "placeholder-2": [
         { name: "James", score: 34628 },
         { name: "Mary", score: 81457 },
         { name: "Michael", score: 92713 },
@@ -114,7 +114,7 @@ const leaderboardData = {
         { name: "Sarah", score: 83564 },
     ],
 
-    "Placeholder 3": [
+    "placeholder-3": [
         { name: "James", score: 75841 },
         { name: "Mary", score: 39217 },
         { name: "Michael", score: 84509 },
@@ -137,7 +137,7 @@ const leaderboardData = {
         { name: "Sarah", score: 90138 },
     ],
 
-    "Placeholder 4": [
+    "placeholder-4": [
         { name: "James", score: 19472 },
         { name: "Mary", score: 67308 },
         { name: "Michael", score: 85291 },
@@ -160,7 +160,7 @@ const leaderboardData = {
         { name: "Sarah", score: 75409 },
     ],
 
-    "Placeholder 5": [
+    "placeholder-5": [
         { name: "James", score: 82914 },
         { name: "Mary", score: 15427 },
         { name: "Michael", score: 60385 },
@@ -183,7 +183,7 @@ const leaderboardData = {
         { name: "Sarah", score: 41583 },
     ],
 
-    "Placeholder 6": [
+    "placeholder-6": [
         { name: "James", score: 51286 },
         { name: "Mary", score: 94327 },
         { name: "Michael", score: 28149 },
@@ -206,7 +206,7 @@ const leaderboardData = {
         { name: "Sarah", score: 87925 },
     ],
 
-    "Placeholder 7": [
+    "placeholder-7": [
         { name: "James", score: 27496 },
         { name: "Mary", score: 68531 },
         { name: "Michael", score: 93184 },
@@ -229,7 +229,7 @@ const leaderboardData = {
         { name: "Sarah", score: 92648 },
     ],
 
-    "Placeholder 8": [
+    "placeholder-8": [
         { name: "James", score: 61827 },
         { name: "Mary", score: 38491 },
         { name: "Michael", score: 95738 },
@@ -252,7 +252,7 @@ const leaderboardData = {
         { name: "Sarah", score: 47926 },
     ],
 
-    "Placeholder 9": [
+    "placeholder-9": [
         { name: "James", score: 87142 },
         { name: "Mary", score: 59203 },
         { name: "Michael", score: 31864 },
@@ -275,7 +275,7 @@ const leaderboardData = {
         { name: "Sarah", score: 43209 },
     ],
 
-    "Placeholder 10": [
+    "placeholder-10": [
         { name: "James", score: 45718 },
         { name: "Mary", score: 91864 },
         { name: "Michael", score: 60239 },

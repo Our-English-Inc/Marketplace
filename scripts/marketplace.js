@@ -190,17 +190,19 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      if (Number.isFinite(game.rank)) {
+      // Rank button
+      const rank = computeUserRank(game);
+      if (Number.isFinite(rank)) {
         const meta = card.querySelector(".meta");
         const progressWrap = meta.querySelector(".progress-wrap");
-        const rankBadge = createRankBadge(game.rank);
+        const rankBadge = createRankBadge(rank);
 
         meta.insertBefore(rankBadge, progressWrap);
 
         // Click on rank to open leaderboard
         rankBadge.addEventListener("click", (e) => {
           e.stopPropagation();
-          openLeaderboard(game);
+          openLeaderboard(game, rank);
         });
       }
 
@@ -239,11 +241,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //#region ====== Leaderboard ======
 
-function openLeaderboard(game){
+// Get user rank by comparing scores
+function computeUserRank(game) {
+  const list = leaderboardData[game.id];
+  if (!list || !Number.isFinite(game.userdata_score)) return null;
+
+  const combined = [
+    ...list,
+    { name: "You", score: game.userdata_score }
+  ];
+
+  combined.sort((a, b) => b.score - a.score);
+
+  const index = combined.findIndex(p => p.name === "You");
+  return index === -1 ? null : index + 1;
+}
+
+
+function openLeaderboard(game, rank){
   leaderboardTitle.textContent = `${game.title} · Leaderboard`;
 
   leaderboardContent.innerHTML = `
-    <p>🏆 Your current rank: <strong>${ordinal(game.rank)}</strong></p>
+    <p>🏆 Your current rank: <strong>${ordinal(rank)}</strong></p>
     <p>(Placeholder leaderboard content)</p>
   `;
 
