@@ -1,16 +1,29 @@
-// DOM References
+//#region ====== DOM References ======
+
+// Main
 const leftCol = document.getElementById("col-left");
 const rightCol = document.getElementById("col-right");
+
+// Search bar
 const searchInput = document.getElementById("game-search");
 const clearBtn = document.getElementById("search-clear");
 const noResults = document.getElementById("no-results");
 const feed = document.querySelector(".feed");
 
+// Leaderboard
+const lbOverlay = document.getElementById("leaderboard-overlay");
+const lbTitle = document.getElementById("leaderboard-title");
+const lbContent = document.getElementById("leaderboard-content");
+const lbCloseBtn = document.getElementById("leaderboard-close");
+const lbSwitchBtn = document.getElementById("leaderboard-switch");
+
+//#endregion
+
 // ====== Variables ======
 const TOTAL_CHAPTERS = 6;
 const LESSONS_PER_CHAPTER = 5;
 
-//#region ====== Draw Game Card Elements ======
+//#region ====== Draw Game Card ======
 
 // Generate shape icon if no game logo
 function iconSVG(index) {
@@ -72,16 +85,14 @@ function renderSegments(completedChapters) {
   return html;
 }
 
-//#endregion
-
-//#region ====== Rank ======
-
+// Format rank text
 function ordinal(n) {
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+// Draw rank trophy icon
 function trophySVG() {
   return `
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -104,8 +115,6 @@ function createRankBadge(rank) {
   `;
   return el;
 }
-
-//#endregion
 
 // Draw All Game Cards
 document.addEventListener("DOMContentLoaded", () => {
@@ -180,12 +189,20 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      if (Number.isFinite(game.rank)) {
+      // Rank button
+      const rank = computeUserRank(game);
+      if (Number.isFinite(rank)) {
         const meta = card.querySelector(".meta");
         const progressWrap = meta.querySelector(".progress-wrap");
-        const rankBadge = createRankBadge(game.rank);
+        const rankBadge = createRankBadge(rank);
 
         meta.insertBefore(rankBadge, progressWrap);
+
+        // Click on rank to open leaderboard
+        rankBadge.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openLeaderboard(game, rank);
+        });
       }
 
       // Click on icon to open game url
@@ -218,3 +235,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
+
+//#endregion
+
+//#region ====== Leaderboard ======
+
+// Sort all users scores
+function getSortedScores(game) {
+  const base = leaderboardData[game.id].filter(
+    p => p.name !== "You" && !p.isPlayer
+  );
+
+  return [
+    ...base,
+    { name: "You", score: game.userdata_score, isPlayer: true }
+  ].sort((a, b) => b.score - a.score);
+}
+
+// Get user rank by comparing scores
+function computeUserRank(game) {
+  const list = getSortedScores(game);
+  return list.findIndex(p => p.isPlayer) + 1;
+}
+
+// Draw leaderboard items
+function buildLeaderboard(game) {
+  const list = getSortedScores(game);
+  return list.map((p, i) => ({ ...p, rank: i + 1 }));
+}
+
+// Draw entire leaderbaord
+function openLeaderboard(game, rank) {
+  lbTitle.textContent = `${game.title} · Leaderboard`;
+
+  const data = buildLeaderboard(game);
+  
+  // ===== Top 3 =====
+  const podium = data.slice(0, 3);
+  const podiumOrdered = [podium[1], podium[0], podium[2]];
+  const podiumHTML = podiumOrdered.map((p) => `
+    <div class="lb-podium-item lb-rank-${p.rank}">
+      <div class="podium-rank">${p.rank}</div>
+
+      <div class="avatar"></div>
+
+      <div class="name">${p.name}</div>
+      <div class="score">${p.score}</div>
+
+      ${p.rank === 1 ? `<div class="crown">👑</div>` : ""}
+    </div>
+  `).join("");
+
+  document.getElementById("lb-podium").innerHTML = podiumHTML;
+
+  // ===== 4–10 =====
+  const listHTML = data.slice(3, 10).map(p => `
+    <li class="lb-item ${p.isPlayer ? "lb-item-player" : ""}">
+      <span class="rank">${p.rank}</span>
+      <span class="avatar"></span>
+      <span class="name">${p.name}</span>
+      <span class="score">${p.score}</span>
+    </li>
+  `).join("");
+
+  document.getElementById("lb-list").innerHTML = listHTML;
+
+  // ===== Player rank > 10 =====
+  const player = data.find(p => p.isPlayer);
+  const overflowHTML = document.getElementById("lb-overflow");
+  const isPlayerInTop10 = data.slice(0, 10).some(p => p.isPlayer);
+
+  // reset overflow
+  overflowHTML.classList.add("hidden");
+  overflowHTML.innerHTML = "";
+
+  if (player && !isPlayerInTop10) {
+    overflowHTML.innerHTML = `
+      <ul class="lb-list">
+        <li class="lb-item lb-item-player">
+          <span class="rank">${player.rank}</span>
+          <span class="avatar"></span>
+          <span class="name">${player.name}</span>
+          <span class="score">${player.score}</span>
+        </li>
+      </ul>
+    `;
+    overflowHTML.classList.remove("hidden");
+  } else {
+    overflowHTML.classList.add("hidden");
+  }
+
+  lbOverlay.classList.remove("hidden");
+  lbOverlay.setAttribute("aria-hidden", "false");
+}
+
+function closeLeaderboard(){
+  lbOverlay.classList.add("hidden");
+  lbOverlay.setAttribute("aria-hidden", "true");
+}
+
+lbCloseBtn.onclick = closeLeaderboard;
+
+lbSwitchBtn.onclick = () => {
+  closeLeaderboard();
+  //TODO：switch to oher games
+};
+
+//#endregion
