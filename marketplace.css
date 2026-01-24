@@ -533,10 +533,11 @@ header{
 }
 
 .lb-podium-item{
-  background: rgba(107,92,255,.10);
-  border: 1px solid rgba(107,92,255,.18);
-  border-radius: 18px;
+  position: relative;
+  text-align: center;
   padding: 12px 10px;
+  border-radius: 18px;
+  background: rgba(107,92,255,0.12);
 }
 
 .lb-podium-item .avatar{
@@ -558,6 +559,10 @@ header{
   color: var(--accent);
 }
 
+.lb-rank-1{
+  transform: translateY(-8px);
+}
+
 .lb-rank-1 .avatar{
   width: 88px;
   height: 88px;
@@ -573,6 +578,14 @@ header{
 .crown{
   color: gold;
   font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.podium-rank{
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
   margin-bottom: 6px;
 }
 

@@ -269,17 +269,19 @@ function openLeaderboard(game, rank) {
   lbTitle.textContent = `${game.title} · Leaderboard`;
 
   const data = buildLeaderboard(game);
-
-  const podium = data.slice(0, 3);
-  const rest = data.slice(3, 10);
-  const player = data.find(p => p.isPlayer);
-
+  
   // ===== Top 3 =====
-  const podiumHTML = podium.map((p) => `
+  const podium = data.slice(0, 3);
+  const podiumOrdered = [podium[1], podium[0], podium[2]];
+  const podiumHTML = podiumOrdered.map((p) => `
     <div class="lb-podium-item lb-rank-${p.rank}">
+      <div class="podium-rank">${p.rank}</div>
+
       <div class="avatar"></div>
+
       <div class="name">${p.name}</div>
       <div class="score">${p.score}</div>
+
       ${p.rank === 1 ? `<div class="crown">👑</div>` : ""}
     </div>
   `).join("");
@@ -287,7 +289,7 @@ function openLeaderboard(game, rank) {
   document.getElementById("lb-podium").innerHTML = podiumHTML;
 
   // ===== 4–10 =====
-  const listHTML = rest.map(p => `
+  const listHTML = data.slice(3, 10).map(p => `
     <li class="lb-item ${p.isPlayer ? "lb-item-player" : ""}">
       <span class="rank">${p.rank}</span>
       <span class="avatar"></span>
@@ -299,6 +301,7 @@ function openLeaderboard(game, rank) {
   document.getElementById("lb-list").innerHTML = listHTML;
 
   // ===== Player rank > 10 =====
+  const player = data.find(p => p.isPlayer);
   const overflowHTML = document.getElementById("lb-overflow");
   const isPlayerInTop10 = data.slice(0, 10).some(p => p.isPlayer);
 
