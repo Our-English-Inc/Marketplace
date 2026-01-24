@@ -242,8 +242,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Sort all users scores
 function getSortedScores(game) {
+  const base = leaderboardData[game.id].filter(
+    p => p.name !== "You" && !p.isPlayer
+  );
+
   return [
-    ...leaderboardData[game.id],
+    ...base,
     { name: "You", score: game.userdata_score, isPlayer: true }
   ].sort((a, b) => b.score - a.score);
 }
@@ -296,11 +300,17 @@ function openLeaderboard(game, rank) {
 
   // ===== Player rank > 10 =====
   const overflowHTML = document.getElementById("lb-overflow");
+  const isPlayerInTop10 = data.slice(0, 10).some(p => p.isPlayer);
 
-  if (player && player.rank > 10) {
+  // reset overflow
+  overflowHTML.classList.add("hidden");
+  overflowHTML.innerHTML = "";
+
+  if (player && !isPlayerInTop10) {
     overflowHTML.innerHTML = `
       <div class="lb-item lb-item-player lb-item-overflow">
         <span class="rank">${player.rank}</span>
+        <span class="avatar"></span>
         <span class="name">${player.name}</span>
         <span class="score">${player.score}</span>
       </div>
