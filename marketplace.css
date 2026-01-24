@@ -616,14 +616,4 @@ header{
   font-weight: 700;
 }
 
-/* ------ Behind 10th ------ */
-.lb-item-overflow{
-  background: rgba(255,255,255,0.12);
-  border: none;
-}
-
-.lb-item-overflow .score{
-  color: var(--accent-yellow);
-}
-
 /*#endregion */

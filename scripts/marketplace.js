@@ -308,12 +308,14 @@ function openLeaderboard(game, rank) {
 
   if (player && !isPlayerInTop10) {
     overflowHTML.innerHTML = `
-      <div class="lb-item lb-item-player lb-item-overflow">
-        <span class="rank">${player.rank}</span>
-        <span class="avatar"></span>
-        <span class="name">${player.name}</span>
-        <span class="score">${player.score}</span>
-      </div>
+      <ul class="lb-list">
+        <li class="lb-item lb-item-player">
+          <span class="rank">${player.rank}</span>
+          <span class="avatar"></span>
+          <span class="name">${player.name}</span>
+          <span class="score">${player.score}</span>
+        </li>
+      </ul>
     `;
     overflowHTML.classList.remove("hidden");
   } else {
