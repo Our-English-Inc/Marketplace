@@ -61,20 +61,39 @@
 
   <!-- ====== Leaderboard Overlay ====== -->
   <div id="leaderboard-overlay" class="overlay hidden" aria-hidden="true">
-    <div class="overlay-panel">
-      <header class="overlay-header">
-        <h2 id="leaderboard-title">Leaderboard</h2>
-        <button id="leaderboard-close" class="overlay-close">✕</button>
+    <div class="overlay-panel leaderboard-panel">
+
+      <!-- Header -->
+      <header class="overlay-header leaderboard-header">
+        <h2 id="leaderboard-title">LEADERBOARD</h2>
       </header>
 
-      <div id="leaderboard-content" class="overlay-content">
-        <!-- Items will be generate by js -->
+      <!-- Content -->
+      <div id="leaderboard-content" class="overlay-content leaderboard-content">
+
+        <!-- ===== Top 3 Podium ===== -->
+        <div class="lb-top3" id="lb-top3">
+          <!-- JS inject top 3 here -->
+        </div>
+
+        <!-- ===== Rank List 4–10 ===== -->
+        <ul class="lb-list" id="lb-list">
+          <!-- JS inject rank 4–10 here -->
+        </ul>
+
+        <!-- ===== Player Overflow (if rank > 10) ===== -->
+        <div class="lb-overflow hidden" id="lb-overflow">
+          <!-- JS inject player row here -->
+        </div>
+
       </div>
 
-      <footer class="overlay-footer">
-        <button id="leaderboard-back" class="overlay-btn">Back</button>
+      <!-- Footer -->
+      <footer class="overlay-footer leaderboard-footer">
+        <button id="leaderboard-close" class="overlay-btn">Close</button>
         <button id="leaderboard-switch" class="overlay-btn primary">Switch Game</button>
       </footer>
+
     </div>
   </div>
 

@@ -11,12 +11,11 @@ const noResults = document.getElementById("no-results");
 const feed = document.querySelector(".feed");
 
 // Leaderboard
-const leaderboardOverlay = document.getElementById("leaderboard-overlay");
-const leaderboardTitle = document.getElementById("leaderboard-title");
-const leaderboardContent = document.getElementById("leaderboard-content");
-const leaderboardClose = document.getElementById("leaderboard-close");
-const leaderboardBack = document.getElementById("leaderboard-back");
-const leaderboardSwitch = document.getElementById("leaderboard-switch");
+const lbOverlay = document.getElementById("leaderboard-overlay");
+const lbTitle = document.getElementById("leaderboard-title");
+const lbContent = document.getElementById("leaderboard-content");
+const lbCloseBtn = document.getElementById("leaderboard-close");
+const lbSwitchBtn = document.getElementById("leaderboard-switch");
 
 //#endregion
 
@@ -241,46 +240,90 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //#region ====== Leaderboard ======
 
-// Get user rank by comparing scores
-function computeUserRank(game) {
-  const list = leaderboardData[game.id];
-  if (!list || !Number.isFinite(game.userdata_score)) return null;
-
-  const combined = [
-    ...list,
-    { name: "You", score: game.userdata_score }
-  ];
-
-  combined.sort((a, b) => b.score - a.score);
-
-  const index = combined.findIndex(p => p.name === "You");
-  return index === -1 ? null : index + 1;
+// Sort all users scores
+function getSortedScores(game) {
+  return [
+    ...leaderboardData[game.id],
+    { name: "You", score: game.userdata_score, isPlayer: true }
+  ].sort((a, b) => b.score - a.score);
 }
 
+// Get user rank by comparing scores
+function computeUserRank(game) {
+  const list = getSortedScores(game);
+  return list.findIndex(p => p.isPlayer) + 1;
+}
 
-function openLeaderboard(game, rank){
-  leaderboardTitle.textContent = `${game.title} · Leaderboard`;
+// Draw leaderboard items
+function buildLeaderboard(game) {
+  const list = getSortedScores(game);
+  return list.map((p, i) => ({ ...p, rank: i + 1 }));
+}
 
-  leaderboardContent.innerHTML = `
-    <p>🏆 Your current rank: <strong>${ordinal(rank)}</strong></p>
-    <p>(Placeholder leaderboard content)</p>
-  `;
+// Draw entire leaderbaord
+function openLeaderboard(game, rank) {
+  lbTitle.textContent = `${game.title} · Leaderboard`;
 
-  leaderboardOverlay.classList.remove("hidden");
-  leaderboardOverlay.setAttribute("aria-hidden", "false");
+  const data = buildLeaderboard(game);
+
+  const top3 = data.slice(0, 3);
+  const rest = data.slice(3, 10);
+  const player = data.find(p => p.isPlayer);
+
+  // ===== Top 3 =====
+  const top3HTML = top3.map((p) => `
+    <div class="lb-top lb-rank-${p.rank}">
+      <div class="avatar"></div>
+      <div class="name">${p.name}</div>
+      <div class="score">${p.score}</div>
+      ${p.rank === 1 ? `<div class="crown">👑</div>` : ""}
+    </div>
+  `).join("");
+  
+  document.getElementById("lb-top3").innerHTML = top3HTML;
+
+  // ===== 4–10 =====
+  const listHTML = rest.map(p => `
+    <li class="lb-item ${p.isPlayer ? "lb-item-player" : ""}">
+      <span class="rank">${p.rank}</span>
+      <span class="avatar"></span>
+      <span class="name">${p.name}</span>
+      <span class="score">${p.score}</span>
+    </li>
+  `).join("");
+
+  document.getElementById("lb-list").innerHTML = listHTML;
+
+  // ===== Player rank > 10 =====
+  const overflowHTML = document.getElementById("lb-overflow");
+
+  if (player && player.rank > 10) {
+    overflowHTML.innerHTML = `
+      <div class="lb-item lb-item-player">
+        <span class="rank">${player.rank}</span>
+        <span class="name">${player.name}</span>
+        <span class="score">${player.score}</span>
+      </div>
+    `;
+    overflowHTML.classList.remove("hidden");
+  } else {
+    overflowHTML.classList.add("hidden");
+  }
+
+  lbOverlay.classList.remove("hidden");
+  lbOverlay.setAttribute("aria-hidden", "false");
 }
 
 function closeLeaderboard(){
-  leaderboardOverlay.classList.add("hidden");
-  leaderboardOverlay.setAttribute("aria-hidden", "true");
+  lbOverlay.classList.add("hidden");
+  lbOverlay.setAttribute("aria-hidden", "true");
 }
 
-leaderboardClose.onclick = closeLeaderboard;
-leaderboardBack.onclick = closeLeaderboard;
+lbCloseBtn.onclick = closeLeaderboard;
 
-leaderboardSwitch.onclick = () => {
+lbSwitchBtn.onclick = () => {
   closeLeaderboard();
+  //TODO：switch to oher games
 };
-
 
 //#endregion

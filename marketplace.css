@@ -13,6 +13,7 @@
 
   --accent:#6b5cff;
   --track:#e9eaf2;
+  --accent-yellow: #D4AF37;
 
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -529,6 +530,122 @@ header{
 .overlay-btn.primary{
   background: var(--accent);
   color: white;
+}
+
+.lb-top3{
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* ------ Top 3 ------ */
+.lb-top3{
+  text-align: center;
+  color: var(--text);
+}
+
+.lb-top{
+  background: rgba(107,92,255,.10);
+  border: 1px solid rgba(107,92,255,.18);
+  border-radius: 18px;
+  padding: 12px 10px;
+}
+
+.lb-top .avatar{
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  margin: 0 auto 8px;
+  background: rgba(107,92,255,.18);
+}
+
+.lb-top .name{
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.lb-top .score{
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.lb-rank-1 .avatar{
+  width: 88px;
+  height: 88px;
+}
+
+.lb-rank-2 .avatar,
+.lb-rank-3 .avatar{
+  width: 64px;
+  height: 64px;
+  opacity: 0.9;
+}
+
+.crown{
+  color: gold;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+/* ------ 4th - 10th ------ */
+.lb-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lb-item{
+  display: grid;
+  grid-template-columns: 28px 36px 1fr auto;
+  align-items: center;
+
+  padding: 10px 12px;
+  margin-bottom: 8px;
+
+  background: rgba(15,18,34,0.04);
+  border: 1px solid rgba(15,18,34,0.06);
+  border-radius: 14px;
+}
+
+.lb-item .rank{
+  font-weight: 800;
+  color: rgba(15,18,34,.55);
+}
+
+.lb-item .name{
+  font-weight: 700;
+}
+
+.lb-item .score{
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.lb-item-player{
+  background: rgba(107,92,255,0.12);
+  border: 1px solid rgba(107,92,255,0.30);
+  font-weight: 700;
+}
+
+/* ------ Behind 10th ------ */
+.lb-item{
+  display: grid;
+  grid-template-columns: 24px 36px 1fr auto;
+  align-items: center;
+
+  padding: 10px 14px;
+  margin-bottom: 8px;
+
+  background: rgba(255,255,255,0.12);
+  border-radius: 14px;
+}
+
+.lb-item .score{
+  color: var(--accent-yellow);
+  font-weight: 700;
 }
 
 /*#endregion */
