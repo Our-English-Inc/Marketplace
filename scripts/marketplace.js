@@ -286,7 +286,7 @@ function openLeaderboard(game, rank) {
   const podium = data.slice(0, 3);
   const podiumOrdered = [podium[1], podium[0], podium[2]];
   const podiumHTML = podiumOrdered.map((p) => `
-    <div class="lb-podium-item lb-rank-${p.rank}">
+    <div class="lb-podium-item lb-rank-${p.rank} ${p.isPlayer ? "lb-item-player" : ""}">
       <div class="podium-rank">${formatRank(p.rank)}</div>
 
       <img
