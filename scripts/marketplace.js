@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Click on icon to open game url
       const icon = card.querySelector(".icon");
       icon.onclick = () => {
-        window.location.href = game.url;
+        window.top.location.href = game.url;
       };
 
       // Add enter animation with stagger delay
