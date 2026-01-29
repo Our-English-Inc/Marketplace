@@ -11,18 +11,26 @@ const noResults = document.getElementById("no-results");
 const feed = document.querySelector(".feed");
 
 // Leaderboard
-const lbOverlay = document.getElementById("leaderboard-overlay");
-const lbTitle = document.getElementById("leaderboard-title");
-const lbContent = document.getElementById("leaderboard-content");
-const lbCloseBtn = document.getElementById("leaderboard-close");
-const lbSwitchBtn = document.getElementById("leaderboard-switch");
+const lbOverlay = document.getElementById("lb-overlay");
+const lbTitle = document.getElementById("lb-title");
+const lbContent = document.getElementById("lb-content");
+const lbCloseBtn = document.getElementById("lb-close");
+const lbPlayBtn = document.getElementById("lb-play");
 
 //#endregion
 
 // ====== Variables ======
+
 const TOTAL_CHAPTERS = 6;
 //const LESSONS_PER_CHAPTER = 5;
 const userdata_username = "username (You)"
+let curGameToOpen = null;
+
+// ====== General Logics ======
+
+function openGameURL(game) {
+  window.top.location.href = game.url;
+}
 
 //#region ====== Draw Game Card ======
 
@@ -209,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Click on icon to open game url
       const icon = card.querySelector(".icon");
       icon.onclick = () => {
-        window.top.location.href = game.url;
+        openGameURL(game);
       };
 
       // Add enter animation with stagger delay
@@ -280,6 +288,7 @@ function getAvatarUrl(name){
 // Draw entire leaderbaord
 function openLeaderboard(game, rank) {
   lbTitle.textContent = `${game.title} · Leaderboard`;
+  curGameToOpen = game;
 
   const data = buildLeaderboard(game);
   
@@ -361,13 +370,13 @@ function openLeaderboard(game, rank) {
 function closeLeaderboard(){
   lbOverlay.classList.add("hidden");
   lbOverlay.setAttribute("aria-hidden", "true");
+  curGameToOpen = null;
 }
 
 lbCloseBtn.onclick = closeLeaderboard;
 
-lbSwitchBtn.onclick = () => {
-  closeLeaderboard();
-  //TODO：switch to oher games
+lbPlayBtn.onclick = () => {
+  openGameURL(curGameToOpen);
 };
 
 //#endregion
