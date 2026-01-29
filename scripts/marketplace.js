@@ -21,7 +21,7 @@ const lbSwitchBtn = document.getElementById("leaderboard-switch");
 
 // ====== Variables ======
 const TOTAL_CHAPTERS = 6;
-const LESSONS_PER_CHAPTER = 5;
+//const LESSONS_PER_CHAPTER = 5;
 const userdata_username = "username (You)"
 
 //#region ====== Draw Game Card ======
@@ -59,16 +59,16 @@ function renderLogo(game, index) {
 // progress = completed chapters (0..6)
 // Display always "Lesson xx–xx" (1–5 ... 26–30)
 // If completedChapters == 6, still display last range 26–30.
-function getLessonRange(completedChapters) {
-  const chapterIndex = Math.min(
-    Math.max(completedChapters, 0),
-    TOTAL_CHAPTERS - 1
-  );
+// function getLessonRange(completedChapters) {
+//   const chapterIndex = Math.min(
+//     Math.max(completedChapters, 0),
+//     TOTAL_CHAPTERS - 1
+//   );
 
-  const start = chapterIndex * LESSONS_PER_CHAPTER + 1;
-  const end = start + LESSONS_PER_CHAPTER - 1;
-  return { start, end };
-}
+//   const start = chapterIndex * LESSONS_PER_CHAPTER + 1;
+//   const end = start + LESSONS_PER_CHAPTER - 1;
+//   return { start, end };
+// }
 
 // Make sure the number of completed chapters is legal
 function clampChapters(n) {
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     filteredGames.forEach((game, index) => {
       const hasProgress = typeof game.userdata_progress === "number";
       const completedChapters = clampChapters(hasProgress ? game.userdata_progress : 0);
-      const range = getLessonRange(completedChapters);
+      //const range = getLessonRange(completedChapters);
 
       const card = document.createElement("article");
       card.className = "card";
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="progress-wrap">
               <div class="progress" style="${hasProgress ? "" : "display:none"}" aria-label="lesson progress">
                 <div class="progress-label">
-                  <span>Lesson ${range.start}–${range.end}</span>
+                  <span>Level ${game.userdata_progress}</span>
                   <span>${completedChapters}/${TOTAL_CHAPTERS}</span>
                 </div>
 
