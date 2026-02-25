@@ -40,9 +40,6 @@ body{
 
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
-}
-
-body{
   background:
     radial-gradient(
       1200px 700px at 50% 20%,
